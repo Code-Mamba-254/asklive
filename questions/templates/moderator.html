@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h3 class="mb-3">Moderator – {{ event.name }}</h3>
+
+{% for q in questions %}
+  <div class="card p-3 mb-3 shadow-sm">
+    <p class="big-text">{{ q.text }}</p>
+
+    <form method="post">
+      {% csrf_token %}
+      <input type="hidden" name="qid" value="{{ q.id }}">
+      <button class="btn btn-success btn-sm">Approve</button>
+    </form>
+  </div>
+{% empty %}
+  <p class="text-muted">No pending questions</p>
+{% endfor %}
+
+{% endblock %}

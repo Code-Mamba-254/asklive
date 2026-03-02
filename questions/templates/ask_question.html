@@ -1,0 +1,120 @@
+<!-- templates/ask_question.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <title>Ask a Question</title>
+    <style>
+        :root {
+        --brand-color: {{ event.brand_color|default:'#1976d2' }};
+    }
+        body {
+            font-family: Arial, sans-serif;
+            background: #f7f7f7;
+            padding: 20px;
+        }
+        .box {
+            max-width: 500px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        button {
+            background: var(--brand-color);
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+        :root {
+    --brand-color: {{ event.brand_color|default:'#1976d2' }};
+}
+
+#submitBtn {
+    background: var(--brand-color);
+    color: white;
+}
+
+    </style>
+</head>
+<body>
+   
+<div class="box">
+    <h2>Ask a Question</h2>
+    <p>{{ event.name }}</p>
+
+    {% if success %}
+        <p style="color: green;">✅ Question submitted. You can ask another.</p>
+    {% endif %}
+    {% if messages %}
+    <div class="toast-container">
+        {% for message in messages %}
+            <div class="toast">{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    <form method="post">
+        <script>
+            if (window.history.replaceState) {
+                window.history.replaceState(null, null, window.location.href);
+            }
+        </script>
+        {% csrf_token %}
+        <textarea
+            name="text"
+            rows="4"
+            style="width:100%;"
+            placeholder="Type your question here..."
+            required
+        ></textarea>
+        <br><br>
+        <button id="submitBtn" type="submit">
+            Submit Question
+        </button>
+    </form>
+
+    <p style="font-size:12px;color:#777;margin-top:10px;">
+        You can ask multiple questions without rescanning the QR code.
+    </p>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const input = document.querySelector("textarea, input[type=text]");
+        if (input) input.focus();
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const form = document.querySelector("form");
+        const btn = document.getElementById("submitBtn");
+    
+        if (!form || !btn) return;
+    
+        form.addEventListener("submit", function () {
+            btn.disabled = true;
+            let seconds = 5;
+            const originalText = btn.innerText;
+    
+            btn.innerText = `Wait ${seconds}s`;
+    
+            const timer = setInterval(() => {
+                seconds--;
+                if (seconds > 0) {
+                    btn.innerText = `Wait ${seconds}s`;
+                } else {
+                    clearInterval(timer);
+                    btn.disabled = false;
+                    btn.innerText = originalText;
+                }
+            }, 1000);
+        });
+    });
+    </script>
+</body>
+</html>

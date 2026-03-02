@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="card p-4 shadow-sm">
+  <h4 class="mb-3">{{ event.name }}</h4>
+
+  <form method="post">
+    {% csrf_token %}
+    <textarea name="text" class="form-control mb-3"
+              rows="4" placeholder="Type your question here..." required></textarea>
+
+    <button class="btn btn-success w-100">Send Question</button>
+  </form>
+</div>
+
+{% endblock %}

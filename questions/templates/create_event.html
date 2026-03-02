@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="card p-4 shadow-sm">
+  <h3>Create Event</h3>
+
+  <form method="post">
+    {% csrf_token %}
+    <input name="name" class="form-control mb-3" placeholder="Event name" required>
+    <button class="btn btn-primary w-100">Create Event</button>
+  </form>
+</div>
+
+{% if event %}
+  <div class="card p-4 mt-4 text-center shadow-sm">
+    <h4>{{ event.name }}</h4>
+    <p class="text-muted">Code: {{ event.code }}</p>
+
+    <img class="img-fluid mb-3" style="max-width:220px"
+         src="data:image/png;base64,{{ qr }}">
+         <a class="btn btn-outline-primary mt-3"
+         href="/qr/{{ event.code }}/download/">
+         Download QR Code
+      </a>
+    <p class="small">{{ ask_url }}</p>
+
+    <a class="btn btn-outline-secondary btn-sm" href="/mod/{{ event.code }}/">Moderator</a>
+    <a class="btn btn-outline-secondary btn-sm" href="/display/{{ event.code }}/">Display</a>
+  </div>
+{% endif %}
+
+{% endblock %}

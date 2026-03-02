@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+
+<meta http-equiv="refresh" content="5">
+
+<h2 class="text-center mb-4">{{ event.name }}</h2>
+
+{% for q in questions %}
+  <div class="card p-4 mb-4 shadow display-question">
+    {{ q.text }}
+  </div>
+{% empty %}
+  <p class="text-center text-muted">Waiting for questions…</p>
+{% endfor %}
+
+{% endblock %}
